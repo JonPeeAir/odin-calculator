@@ -1,6 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Rubik:wght@700&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Rubik', sans-serif;
+    color: #fff;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: inherit;
+    height: inherit;
+    background-color: #202124;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    background-color: #C4C4C4;
+    color: black;
+    font-size: 1rem;
+    font-family: 'Fira Sans', sans-serif;
+    width: inherit;
+    min-height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer > p {
+    font-family: inherit;
+    color: inherit;
+    flex: 1;
+    text-align: center;
+}
+
+footer > p > a {
+    font-family: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+footer > a {
+    position: absolute;
+    right: 1rem;
+    transition: all 0.4s;
+
+    display: flex;
+    align-items: center;
+}
+
+footer > a:hover {
+    transform: rotateY(180deg);
 }
 
