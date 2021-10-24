@@ -13,120 +13,169 @@ const equalsButton = document.getElementById("equals");
 
 let equationValue = 0;
 let entryValue = 0;
-
-let evaluatedValue;
-
+let evaluatedValue = 0;
 let newEntry = true;
-numberButtons.forEach(button => {
-    button.onclick = () => {
+
+deleteButton.onclick = () => {
+    entry.textContent = entry.textContent.slice(0, entry.textContent.length - 1);
+    if (entry.textContent === "") {
+        entry.textContent = "0";
+    }
+    entryValue = Number(entry.textContent);
+    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+};
+
+clearEntryButton.onclick = () => {
+    entryValue = 0;
+    entry.textContent = entryValue;
+    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+};
+
+allClearButton.onclick = () => {
+    entryValue = 0;
+    equationValue = 0;
+    evaluatedValue = 0;
+    newEntry = true;
+    equation.textContent = "";
+    entry.textContent = entryValue;
+    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+};
+
+numberButtons.forEach(number => {
+    number.onclick = () => {
         if (newEntry) {
+            entryValue = 0;
             entry.textContent = "";
             newEntry = false;
         }
-
-        entry.textContent += button.textContent;
-        entryValue = Number(entry.textContent);
-
-        // ensure that there are no uneccesary zeroes by 
-        // reassinging entry.textContent with the actual 
-        // number in entryValue
-        entry.textContent = entryValue;
-
-        console.log(typeof entryValue + ": " + entryValue);
+        if (entry.textContent.length < 11) {
+            entry.textContent += number.textContent;
+            entryValue = Number(entry.textContent);
+            // ensure that entry.textContext display no uneccesary zeroes
+            entry.textContent = entryValue;
+        }
+        console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
     }
 });
 
 decimalButton.onclick = () => {
-    if (!entry.textContent.includes(".")) {
+    if (!entry.textContent.includes(".") && entry.textContent.length < 10) {
         if (entry.textContent === "") {
             entry.textContent += "0.";
         } else {
             entry.textContent += decimalButton.textContent;
         }
         entryValue = Number(entry.textContent);
+        newEntry = false;
     }
-    console.log(typeof entryValue + ": " + entryValue);
+    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 };
 
 addButton.onclick = () => {
+    if (newEntry && equation.textContent.slice(-1) !== "=") {
+        return;
+    }
+    
     if (equation.textContent === "") {
         equation.textContent = entryValue + " +";
         equationValue = entryValue;
+        entryValue = 0;
+        entry.textContent = entryValue;
         newEntry = true;
     } else {
-        evaluatedValue = equationValue + entryValue;
+        operate();
         equation.textContent = evaluatedValue + " +";
-        entry.textContent = evaluatedValue;
-        equationValue = evaluatedValue;
-        newEntry = true;
+        entryValue = 0;
+        entry.textContent = entryValue;
     }
 };
 
 minusButton.onclick = () => {
-    if (equation.textContent === "") {
+    if (newEntry && equation.textContent.slice(-1) !== "=") {
+        return;
+    } else if (equation.textContent === "") {
         equation.textContent = entryValue + " -";
         equationValue = entryValue;
+        entryValue = 0;
+        entry.textContent = entryValue;
         newEntry = true;
     } else {
-        evaluatedValue = equationValue - entryValue;
+        operate();
         equation.textContent = evaluatedValue + " -";
-        entry.textContent = evaluatedValue;
-        equationValue = evaluatedValue;
-        newEntry = true;
+        entryValue = 0;
+        entry.textContent = entryValue;
     }
 };
 
 multiplyButton.onclick = () => {
-    if (equation.textContent === "") {
+    if (newEntry && equation.textContent.slice(-1) !== "=") {
+        return;
+    } else if (equation.textContent === "") {
         equation.textContent = entryValue + " ×";
         equationValue = entryValue;
+        entryValue = 0;
+        entry.textContent = entryValue;
         newEntry = true;
     } else {
-        evaluatedValue = equationValue * entryValue;
+        operate();
         equation.textContent = evaluatedValue + " ×";
-        entry.textContent = evaluatedValue;
-        equationValue = evaluatedValue;
-        newEntry = true;
+        entryValue = 0;
+        entry.textContent = entryValue;
     }
 };
 
 divideButton.onclick = () => {
-    if (equation.textContent === "") {
+    if (newEntry && equation.textContent.slice(-1) !== "=") {
+        return;
+    } else if (equation.textContent === "") {
         equation.textContent = entryValue + " ÷";
         equationValue = entryValue;
+        entryValue = 0;
+        entry.textContent = entryValue;
         newEntry = true;
     } else {
-        evaluatedValue = equationValue / entryValue;
+        operate();
         equation.textContent = evaluatedValue + " ÷";
-        entry.textContent = evaluatedValue;
-        equationValue = evaluatedValue;
-        newEntry = true;
+        entryValue = 0;
+        entry.textContent = entryValue;
     }
 };
 
 equalsButton.onclick = () => {
-    if (equationValue === 0 || equationValue !== 0 && newEntry === true) {
+    if (newEntry || equationValue === 0 || newEntry && entryValue === 0) {
+        console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
         return;
     } else {
-        switch(equation.textContent.slice(-1)) {
-            case addButton.textContent:
-                evaluatedValue = add(equationValue, entryValue);
-                break;
-            case minusButton.textContent:
-                evaluatedValue = subtract(equationValue, entryValue);
-                break;
-            case multiplyButton.textContent:
-                evaluatedValue = multiply(equationValue, entryValue);
-                break;
-            case divideButton.textContent:
-                evaluatedValue = divide(equationValue, entryValue)
-        }
+        operate();
         equation.textContent += " " + entryValue + " =";
-        entry.textContent = evaluatedValue;
-        equationValue = evaluatedValue;
-        newEntry = true;
+        entryValue = evaluatedValue.toString().length > 10 ? "cannot store value" : evaluatedValue;
+        entry.textContent = entryValue;
+    }
+    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+}
+
+function operate(operation) {
+    switch(equation.textContent.slice(-1)) {
+        case addButton.textContent:
+            evaluatedValue = add(equationValue, entryValue);
+            break;
+        case minusButton.textContent:
+            evaluatedValue = subtract(equationValue, entryValue);
+            break;
+        case multiplyButton.textContent:
+            evaluatedValue = multiply(equationValue, entryValue);
+            break;
+        case divideButton.textContent:
+            evaluatedValue = divide(equationValue, entryValue)
+            break;
+        default:
+            // Use the evaluated value as entry value
     }
 
+    evaluatedValue = ensure_max_of_ten_characters(evaluatedValue);
+
+    equationValue = evaluatedValue;
+    newEntry = true;
 }
 
 function add(a, b) {
@@ -145,3 +194,14 @@ function divide(a, b) {
     return a / b;
 }
 
+function ensure_max_of_ten_characters(num) {
+    let newNum = 0;
+    if (num.toString().length > 10) {
+        newNum = num.toExponential(3);
+        if (newNum.toString().length > 10) {
+            newNum = NaN;
+        }
+        return newNum;
+    } 
+    return num;
+}
