@@ -16,22 +16,60 @@ let entryValue = 0;
 let evaluatedValue = 0;
 let newEntry = true;
 
-deleteButton.onclick = () => {
+deleteButton.onclick = deleteFromEntry;
+clearEntryButton.onclick = clearEntry;
+allClearButton.onclick = allClear;
+numberButtons.forEach(number => number.addEventListener("click", () => {
+    addNumberToEquation(number.textContent)
+}));
+decimalButton.onclick = addDecimalToEquation;
+addButton.onclick = addEquation;
+minusButton.onclick = subtractEquation;
+multiplyButton.onclick = multiplyEquation;
+divideButton.onclick = divideEquation;
+equalsButton.onclick = performEquation;
+
+document.addEventListener("keydown", event => {
+    console.log(event);
+    if (["Backspace", "Delete"].includes(event.code) && event.ctrlKey && event.altKey) {
+        allClear();
+    } else if (["Backspace", "Delete"].includes(event.code) && event.ctrlKey) {
+        clearEntry();
+    } else if (["Backspace", "Delete"].includes(event.code)) {
+        deleteFromEntry();
+    } else if (event.code === "Period") {
+        addDecimalToEquation();
+    } else if (event.key === "+") {
+        addEquation();
+    } else if (event.key === "-") {
+        subtractEquation();
+    } else if (event.key === "*") {
+        multiplyEquation();
+    } else if (event.key === "/") {
+        divideEquation();
+    } else if (event.code.slice(0, -1) === "Digit") {
+        addNumberToEquation(event.key);
+    } else if (["Enter", "Equal"].includes(event.code)) {
+        performEquation();
+    }
+});
+
+function deleteFromEntry() {
     entry.textContent = entry.textContent.slice(0, entry.textContent.length - 1);
     if (entry.textContent === "") {
         entry.textContent = "0";
     }
     entryValue = Number(entry.textContent);
     console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
-};
+}
 
-clearEntryButton.onclick = () => {
+function clearEntry() {
     entryValue = 0;
     entry.textContent = entryValue;
     console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
-};
+}
 
-allClearButton.onclick = () => {
+function allClear() {
     entryValue = 0;
     equationValue = 0;
     evaluatedValue = 0;
@@ -39,26 +77,25 @@ allClearButton.onclick = () => {
     equation.textContent = "";
     entry.textContent = entryValue;
     console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
-};
+}
 
-numberButtons.forEach(number => {
-    number.onclick = () => {
-        if (newEntry) {
-            entryValue = 0;
-            entry.textContent = "";
-            newEntry = false;
-        }
-        if (entry.textContent.length < 11) {
-            entry.textContent += number.textContent;
-            entryValue = Number(entry.textContent);
-            // ensure that entry.textContext display no uneccesary zeroes
-            entry.textContent = entryValue;
-        }
-        console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+function addNumberToEquation(number) {
+    console.log(number);
+    if (newEntry) {
+        entryValue = 0;
+        entry.textContent = "";
+        newEntry = false;
     }
-});
+    if (entry.textContent.length < 11) {
+        entry.textContent += number;
+        entryValue = Number(entry.textContent);
+        // ensure that entry.textContext display no uneccesary zeroes
+        entry.textContent = entryValue;
+    }
+    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+}
 
-decimalButton.onclick = () => {
+function addDecimalToEquation() {
     if (!entry.textContent.includes(".") && entry.textContent.length < 10) {
         if (entry.textContent === "") {
             entry.textContent += "0.";
@@ -69,9 +106,9 @@ decimalButton.onclick = () => {
         newEntry = false;
     }
     console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
-};
+}
 
-addButton.onclick = () => {
+function addEquation() {
     if (newEntry && equation.textContent.slice(-1) !== "=") {
         return;
     }
@@ -88,9 +125,9 @@ addButton.onclick = () => {
         entryValue = 0;
         entry.textContent = entryValue;
     }
-};
+}
 
-minusButton.onclick = () => {
+function subtractEquation() {
     if (newEntry && equation.textContent.slice(-1) !== "=") {
         return;
     } else if (equation.textContent === "") {
@@ -105,9 +142,10 @@ minusButton.onclick = () => {
         entryValue = 0;
         entry.textContent = entryValue;
     }
-};
+}
 
-multiplyButton.onclick = () => {
+function multiplyEquation() {
+    console.log(entryValue + " " + equationValue);
     if (newEntry && equation.textContent.slice(-1) !== "=") {
         return;
     } else if (equation.textContent === "") {
@@ -122,9 +160,9 @@ multiplyButton.onclick = () => {
         entryValue = 0;
         entry.textContent = entryValue;
     }
-};
+}
 
-divideButton.onclick = () => {
+function divideEquation() {
     if (newEntry && equation.textContent.slice(-1) !== "=") {
         return;
     } else if (equation.textContent === "") {
@@ -139,10 +177,10 @@ divideButton.onclick = () => {
         entryValue = 0;
         entry.textContent = entryValue;
     }
-};
+}
 
-equalsButton.onclick = () => {
-    if (newEntry || equationValue === 0 || newEntry && entryValue === 0) {
+function performEquation() {
+    if (newEntry || newEntry && entryValue === 0) {
         console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
         return;
     } else {
@@ -199,6 +237,7 @@ function ensure_max_of_ten_characters(num) {
     if (num.toString().length > 10) {
         newNum = num.toExponential(3);
         if (newNum.toString().length > 10) {
+            console.log("HI " + newNum.toString());
             newNum = NaN;
         }
         return newNum;
