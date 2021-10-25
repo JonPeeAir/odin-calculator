@@ -173,8 +173,7 @@ function divideEquation() {
 }
 
 function performEquation() {
-    if (newEntry || newEntry && entryValue === 0) {
-        console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
+    if (equation.textContent === "" || equation.textContent.slice(-1) === "=") {
         return;
     } else {
         operate();
@@ -200,6 +199,7 @@ function operate(operation) {
             break;
         default:
             // Use the evaluated value as entry value
+            evaluatedValue = entryValue;
     }
 
     evaluatedValue = ensure_max_of_ten_characters(evaluatedValue);
