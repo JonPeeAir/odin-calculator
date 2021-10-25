@@ -29,6 +29,7 @@ multiplyButton.onclick = multiplyEquation;
 divideButton.onclick = divideEquation;
 equalsButton.onclick = performEquation;
 
+// Keyboard support
 document.addEventListener("keydown", event => {
     console.log(event);
     if (["Backspace", "Delete"].includes(event.code) && event.ctrlKey && event.altKey) {
@@ -60,13 +61,11 @@ function deleteFromEntry() {
         entry.textContent = "0";
     }
     entryValue = Number(entry.textContent);
-    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 }
 
 function clearEntry() {
     entryValue = 0;
     entry.textContent = entryValue;
-    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 }
 
 function allClear() {
@@ -76,11 +75,9 @@ function allClear() {
     newEntry = true;
     equation.textContent = "";
     entry.textContent = entryValue;
-    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 }
 
 function addNumberToEquation(number) {
-    console.log(number);
     if (newEntry) {
         entryValue = 0;
         entry.textContent = "";
@@ -92,7 +89,6 @@ function addNumberToEquation(number) {
         // ensure that entry.textContext display no uneccesary zeroes
         entry.textContent = entryValue;
     }
-    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 }
 
 function addDecimalToEquation() {
@@ -105,7 +101,6 @@ function addDecimalToEquation() {
         entryValue = Number(entry.textContent);
         newEntry = false;
     }
-    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 }
 
 function addEquation() {
@@ -145,7 +140,6 @@ function subtractEquation() {
 }
 
 function multiplyEquation() {
-    console.log(entryValue + " " + equationValue);
     if (newEntry && equation.textContent.slice(-1) !== "=") {
         return;
     } else if (equation.textContent === "") {
@@ -189,7 +183,6 @@ function performEquation() {
         entryValue = evaluatedValue.toString().length > 10 ? "cannot store value" : evaluatedValue;
         entry.textContent = entryValue;
     }
-    console.log("entryValue: " + entryValue + "; Type: " + typeof entryValue);
 }
 
 function operate(operation) {
@@ -237,7 +230,6 @@ function ensure_max_of_ten_characters(num) {
     if (num.toString().length > 10) {
         newNum = num.toExponential(3);
         if (newNum.toString().length > 10) {
-            console.log("HI " + newNum.toString());
             newNum = NaN;
         }
         return newNum;
