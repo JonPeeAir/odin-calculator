@@ -24,6 +24,7 @@ body {
 }
 
 .title {
+    margin-top: 1.5rem;
     font-size: 4rem;
 }
 
@@ -118,6 +119,7 @@ footer {
     font-family: 'Fira Sans', sans-serif;
     width: inherit;
     min-height: 50px;
+    margin-top: 1.5rem;
 
     display: flex;
     justify-content: center;
@@ -148,5 +150,84 @@ footer > a {
 
 footer > a:hover {
     transform: rotateY(180deg);
+}
+
+@media screen and (max-width: 550px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .calculator-body {
+        width: 350px;
+        height: 500px;
+        padding: 1.5rem;
+    }
+
+    .screen {
+        height: 110px;
+    }
+
+    .equation {
+        font-size: 1rem;
+    }
+    
+    .entry {
+        font-size: 2.2rem;
+    }
+
+    .button {
+        width: 70px;
+        height: 58.3px;
+        font-size: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .button.clear {
+        width: 91.6px;
+    }
+
+    .buttons {
+        gap: 0.3rem;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .title {
+        font-size: 2.3rem;
+    }
+
+    .calculator-body {
+        width: 290px;
+        height: 414.3px;
+        padding: 1.1rem;
+    }
+
+    .screen {
+        height: 100px;
+    }
+
+    .equation {
+        font-size: 0.8rem;
+    }
+    
+    .entry {
+        font-size: 1.5rem;
+    }
+
+    .button {
+        width: 58px;
+        height: 48.3px;
+        font-size: 1rem;
+        border-radius: 7px;
+    }
+
+    .button.clear {
+        width: 80px;
+    }
+
+    .buttons {
+        gap: 0.1rem;
+        row-gap: 0.3rem;
+    }
 }
 
