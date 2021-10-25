@@ -31,7 +31,6 @@ equalsButton.onclick = performEquation;
 
 // Keyboard support
 document.addEventListener("keydown", event => {
-    console.log(event);
     if (["Backspace", "Delete"].includes(event.code) && event.ctrlKey && event.altKey) {
         allClear();
     } else if (["Backspace", "Delete"].includes(event.code) && event.ctrlKey) {
